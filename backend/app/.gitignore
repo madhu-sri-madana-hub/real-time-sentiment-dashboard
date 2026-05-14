@@ -1,0 +1,23 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Datasets
+datasets/
+cleaned_data/
+*.csv
+*.zip
+
+# Database
+*.db
+
+# Environment
+.env
+
+# Node
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
