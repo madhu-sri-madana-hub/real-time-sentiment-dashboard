@@ -1,0 +1,5 @@
+2026-05-16 22:38:06,717 - INFO - Sentiment result: {'sentiment': 'positive', 'confidence': 0.8832, 'scores': {'neg': 0.109, 'neu': 0.362, 'pos': 0.529, 'compound': 0.8832}}
+2026-05-16 22:39:44,510 - INFO - Processing text: I love this dashboard! It works perfectly 😍🔥
+2026-05-16 22:39:44,510 - INFO - Sentiment result: {'sentiment': 'positive', 'confidence': 0.8832, 'scores': {'neg': 0.109, 'neu': 0.362, 'pos': 0.529, 'compound': 0.8832}}
+2026-05-16 22:42:58,133 - INFO - Processing text: I love this dashboard! It works perfectly 😍🔥
+2026-05-16 22:42:58,133 - INFO - Sentiment result: {'sentiment': 'positive', 'confidence': 0.8832, 'scores': {'neg': 0.109, 'neu': 0.362, 'pos': 0.529, 'compound': 0.8832}}
