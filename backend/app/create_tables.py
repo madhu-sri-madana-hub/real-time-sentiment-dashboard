@@ -1,8 +1,10 @@
 from database import engine
-from models import Base
+from models import Base, Post
 
 print("SCRIPT STARTED")
 
-Base.metadata.create_all(engine)
+print(Base.metadata.tables.keys())
+
+Base.metadata.create_all(bind=engine)
 
 print("Tables created successfully!")

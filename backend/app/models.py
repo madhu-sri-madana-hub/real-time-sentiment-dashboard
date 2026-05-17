@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, DateTime
 from sqlalchemy.orm import declarative_base
-from datetime import datetime
+from datetime import datetime, UTC
 
 Base = declarative_base()
 
@@ -11,11 +11,15 @@ class Post(Base):
 
     text = Column(String)
     cleaned_text = Column(String)
+
     source = Column(String)
 
     sentiment = Column(String)
     confidence_score = Column(Float)
 
-    # ✅ NEW COLUMNS (Step 2 requirement)
     platform = Column(String)
-    processed_at = Column(DateTime, default=datetime.utcnow)
+
+    processed_at = Column(
+        DateTime,
+        default=lambda: datetime.now(UTC)
+    )

@@ -1,55 +1,94 @@
 import pandas as pd
+
 from database import SessionLocal
 from models import Post
 
 print("SCRIPT STARTED")
 
+# Database session
 session = SessionLocal()
 
-# ✅ FIX 1: correct encoding handling
-twitter_df = pd.read_csv(
-    "datasets/twitter/twitter_data.csv",
-    encoding="latin-1",
-    on_bad_lines="skip"
+# ----------------------------
+# STEP 1: LOAD PROCESSED DATA
+# ----------------------------
+df = pd.read_csv(
+    "datasets/processed_sentiment.csv",
+    encoding="latin1",
+    low_memory=False
 )
 
-reddit_df = pd.read_csv(
-    "datasets/reddit/reddit_comments.csv",
-    encoding="latin-1",
-    on_bad_lines="skip"
+print("DATA LOADED:", df.shape)
+
+# ----------------------------
+# STEP 2: HANDLE MISSING VALUES
+# ----------------------------
+df["content"] = df["content"].fillna("No Text")
+
+df["sentiment"] = df["sentiment"].fillna("Neutral")
+
+df["confidence_score"] = df["confidence_score"].fillna(0)
+
+# ----------------------------
+# STEP 3: REMOVE DUPLICATES
+# ----------------------------
+before_duplicates = len(df)
+
+df = df.drop_duplicates(subset=["content"])
+
+after_duplicates = len(df)
+
+print(
+    "DUPLICATES REMOVED:",
+    before_duplicates - after_duplicates
 )
 
-print("DATA LOADED SUCCESSFULLY")
+# ----------------------------
+# STEP 4: INSERT FUNCTION
+# ----------------------------
+def insert_data(dataframe):
 
-# ✅ FIX 2: insert safely row-by-row
-def insert_data(df, source_name):
-    for _, row in df.iterrows():
+    posts = []
+
+    for _, row in dataframe.iterrows():
+
         try:
-            text_value = str(row.get("text", ""))
-
-            # skip bad rows like column name repeating
-            if text_value.lower() in ["text", "", "nan"]:
-                continue
-
             post = Post(
-                text=text_value,
-                cleaned_text=str(row.get("cleaned_text", text_value)),
-                source=source_name
+
+                text=str(row["content"]),
+
+                cleaned_text=None,
+
+                source=str(
+                    row.get("source", "dataset")
+                ),
+
+                sentiment=str(row["sentiment"]),
+
+                confidence_score=float(
+                    row["confidence_score"]
+                )
             )
 
-            session.add(post)
+            posts.append(post)
 
         except Exception as e:
-            print(f"Skipped row:", e)
+            print("Skipped row:", e)
+
+    # ----------------------------
+    # BULK INSERTION
+    # ----------------------------
+    session.bulk_save_objects(posts)
 
     session.commit()
-    print(f"{source_name} inserted successfully")
 
-print("Inserting Twitter data...")
-insert_data(twitter_df, "twitter")
+    print("DATA INSERTED SUCCESSFULLY")
 
-print("Inserting Reddit data...")
-insert_data(reddit_df, "reddit")
+
+# ----------------------------
+# STEP 5: RUN INSERTION
+# ----------------------------
+insert_data(df)
 
 session.close()
-print("ALL DATA INSERTED SUCCESSFULLY")
+
+print("ALL DATA INSERTED SUCCESSFULLY ✔")

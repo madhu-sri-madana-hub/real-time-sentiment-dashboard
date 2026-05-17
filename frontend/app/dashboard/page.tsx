@@ -1,61 +1,38 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import AnalyticsCard from "@/components/AnalyticsCard";
+import DatasetTable from "@/components/DatasetTable";
 
-export default function Dashboard() {
-  const [time, setTime] = useState("");
+export default function Home() {
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(new Date().toLocaleString());
-    }, 1000);
+  const sampleData = [
 
-    return () => clearInterval(interval);
-  }, []);
+    {
+      text: "I love this dashboard! Amazing UI.",
+      sentiment: "Positive",
+      confidence_score: 0.92,
+    },
+
+    {
+      text: "This update is terrible.",
+      sentiment: "Negative",
+      confidence_score: 0.87,
+    },
+
+    {
+      text: "The app is okay for now.",
+      sentiment: "Neutral",
+      confidence_score: 0.50,
+    },
+
+  ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black p-6">
 
-      {/* HEADER */}
-      <div className="text-white mb-6">
+    <div className="min-h-screen bg-black p-10">
 
-        <h1 className="text-3xl font-bold">
-          Sentiment Dashboard
-        </h1>
-
-        <p className="text-gray-300 text-sm mt-2">
-          Current Time: {time}
-        </p>
-
-        <div className="flex gap-3 mt-3 flex-wrap">
-
-          <span className="px-3 py-1 bg-green-500 rounded-full text-sm">
-            Model: VADER
-          </span>
-
-          <span className="px-3 py-1 bg-blue-500 rounded-full text-sm">
-            Dataset: Active
-          </span>
-
-          <span className="px-3 py-1 bg-purple-500 rounded-full text-sm">
-            Status: Ready
-          </span>
-
-        </div>
-
-      </div>
-
-      {/* CARDS */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-
-        <AnalyticsCard title="Positive Posts" value="120" />
-        <AnalyticsCard title="Neutral Posts" value="45" />
-        <AnalyticsCard title="Negative Posts" value="30" />
-        <AnalyticsCard title="Avg Confidence" value="0.82" />
-
-      </div>
+      <DatasetTable data={sampleData} />
 
     </div>
+
   );
 }
