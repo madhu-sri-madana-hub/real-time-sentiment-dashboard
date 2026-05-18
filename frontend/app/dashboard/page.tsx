@@ -13,6 +13,9 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
+  LineChart,
+  Line,
+  Legend,
 } from "recharts";
 
 export default function Home() {
@@ -49,6 +52,14 @@ export default function Home() {
     { day: "Wed", posts: 180 },
     { day: "Thu", posts: 260 },
     { day: "Fri", posts: 320 },
+  ];
+
+  const lineData = [
+    { day: "Mon", positive: 120, negative: 40 },
+    { day: "Tue", positive: 180, negative: 60 },
+    { day: "Wed", positive: 150, negative: 55 },
+    { day: "Thu", positive: 240, negative: 70 },
+    { day: "Fri", positive: 300, negative: 90 },
   ];
 
   const COLORS = ["#10b981", "#ef4444", "#64748b"];
@@ -237,6 +248,51 @@ export default function Home() {
                   />
 
                 </BarChart>
+
+              </ResponsiveContainer>
+
+            </div>
+
+          </div>
+
+          {/* LINE CHART */}
+          <div className="xl:col-span-2 bg-gray-900/80 border border-gray-800 backdrop-blur-md p-6 rounded-3xl shadow-2xl">
+
+            <h2 className="text-2xl font-bold mb-6">
+              Sentiment Trend Analysis
+            </h2>
+
+            <div className="h-96">
+
+              <ResponsiveContainer width="100%" height="100%">
+
+                <LineChart data={lineData}>
+
+                  <CartesianGrid strokeDasharray="3 3" />
+
+                  <XAxis dataKey="day" />
+
+                  <YAxis />
+
+                  <Tooltip />
+
+                  <Legend />
+
+                  <Line
+                    type="monotone"
+                    dataKey="positive"
+                    stroke="#10b981"
+                    strokeWidth={3}
+                  />
+
+                  <Line
+                    type="monotone"
+                    dataKey="negative"
+                    stroke="#ef4444"
+                    strokeWidth={3}
+                  />
+
+                </LineChart>
 
               </ResponsiveContainer>
 
